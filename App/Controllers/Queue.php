@@ -18,9 +18,9 @@ class Queue extends \Core\Controller
     }
 
     /**
-     * Show the index page
+     * Insert data to queue
      *
-     * @return void
+     * @return json
      */
     public function insert()
     {
@@ -29,23 +29,24 @@ class Queue extends \Core\Controller
 
             $this->load();
 
+            $request = (empty($_POST))?json_decode(file_get_contents("php://input"), true):$_POST;
             $newdata =  array(
-                'id' =>  $_POST["id"],
-                'message' => $_POST["message"],
+                'id' =>  $request["id"],
+                'message' => $request["message"],
                 'queue' => $this->countData + 1,
             );
             array_push($this->queue, $newdata);
             $this->store();
 
             echo json_encode([
-                'code' => '200',
+                'code' => 200,
                 'status' => 'success',
                 'message' => 'Success',
                 'data' => $newdata
             ]);
         } else {
             echo json_encode([
-                'code' => '200',
+                'code' => 200,
                 'status' => 'error',
                 'message' => 'Invalid'
             ]);
@@ -55,18 +56,18 @@ class Queue extends \Core\Controller
     public function call()
     {
         header('Content-Type: application/json; charset=utf-8');
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             $this->load();
             $consume = null;
             if (!empty($this->queue)) {
                 $consume = $this->queue[key($this->queue)];
-                unset($this->queue[key($this->queue)]);   
+                unset($this->queue[key($this->queue)]);
                 $this->store();
             }
 
             echo json_encode([
-                'code' => '200',
+                'code' => 200,
                 'status' => 'success',
                 'message' => 'Success',
                 'consume' => $consume,
@@ -74,7 +75,7 @@ class Queue extends \Core\Controller
             ]);
         } else {
             echo json_encode([
-                'code' => '200',
+                'code' => 200,
                 'status' => 'error',
                 'message' => 'Invalid'
             ]);
@@ -84,19 +85,19 @@ class Queue extends \Core\Controller
     public function getTotalMessage()
     {
         header('Content-Type: application/json; charset=utf-8');
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             $this->load();
 
             echo json_encode([
-                'code' => '200',
+                'code' => 200,
                 'status' => 'success',
                 'message' => 'Success',
                 'data' => count($this->queue) . ' messages in queue'
             ]);
         } else {
             echo json_encode([
-                'code' => '200',
+                'code' => 200,
                 'status' => 'error',
                 'message' => 'Invalid'
             ]);
@@ -107,19 +108,19 @@ class Queue extends \Core\Controller
     public function getMessage()
     {
         header('Content-Type: application/json; charset=utf-8');
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             $this->load();
 
             echo json_encode([
-                'code' => '200',
+                'code' => 200,
                 'status' => 'success',
                 'message' => 'Success',
                 'data' => $this->queue
             ]);
         } else {
             echo json_encode([
-                'code' => '200',
+                'code' => 200,
                 'status' => 'error',
                 'message' => 'Invalid'
             ]);

@@ -8,7 +8,7 @@ Simple PHP Application that offers queueing of SMS Messages.
 
 HTTP API to get all SMS messages in the queue in JSON format
 
-### Method POST
+### Method GET
 ```
 {url}/queue/getmessages
 ```
@@ -20,11 +20,16 @@ HTTP API to get all SMS messages in the queue in JSON format
 ### Method POST
 
 ```
-#Parameter
+#Parameter for raw via Postman
 {
-    'id' => $id,
-    'messages' => $messages,
+    "id": "id",
+    "message": "message"
 }
+#or using form-data
+#key        value
+id          "id"
+message     "message"
+
 #url
 {url}/queue/insert
 ```
@@ -33,7 +38,7 @@ HTTP API to get all SMS messages in the queue in JSON format
 
 HTTP API to consume an SMS Message from the queue and returns it in JSON format (FIFO)
 
-### Method POST
+### Method GET
 ```
 {url}/queue/call
 ```
@@ -42,7 +47,7 @@ HTTP API to consume an SMS Message from the queue and returns it in JSON format 
 
 HTTP API to get the total number of messages in the queue
 
-### Method POST
+### Method GET
 ```
 {url}/queue/countmessages
 ```
@@ -65,3 +70,7 @@ docker-compose up -d
 3. Now go to your browser and access your server’s domain name or IP address on port 8000:
 
 http://server_domain_or_IP:8000
+
+or
+
+http://localhost:8000
